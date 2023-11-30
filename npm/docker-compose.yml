@@ -1,0 +1,37 @@
+version: "3"
+
+volumes:
+  db_vol:
+
+networks:
+  my_links_internal:
+    external: true
+
+services:
+  npm_db:
+    restart: always
+    container_name: npm_db
+    image: jc21/mariadb-aria:10.11.5
+    env_file:
+      - .env
+    volumes:
+      - db_vol:/var/lib/mysql
+
+  nginx:
+    restart: always
+    container_name: npm
+    image: jc21/nginx-proxy-manager:2.10.4
+    env_file:
+      - .env
+    environment:
+      - DB_MYSQL_HOST=npm_db
+      - DB_MYSQL_PORT=3306
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    ports:
+      - "127.0.0.1:80:80"
+      - "127.0.0.1:443:443"
+      - "127.0.0.1:81:81"
+    depends_on:
+      - npm_db

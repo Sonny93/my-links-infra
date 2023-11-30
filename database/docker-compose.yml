@@ -1,0 +1,36 @@
+version: "3.8"
+
+volumes:
+  db_vol:
+
+networks:
+  my_links_internal:
+    external: true
+
+services:
+  mariadb:
+    image: mariadb:11
+    container_name: database
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - my_links_internal
+    volumes:
+      - db_vol:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:5
+    container_name: phpmyadmin
+    restart: always
+    environment:
+      - PMA_HOST=mariadb
+      - PMA_PORT=3306
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:8181:80"
+    networks:
+      - my_links_internal
+    depends_on:
+      - mariadb
