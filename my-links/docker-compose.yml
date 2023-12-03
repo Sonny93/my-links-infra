@@ -10,7 +10,7 @@ services:
     container_name: mylinks
     image: sonny93/my-links:latest
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:5000:3000" # weird but npm is already using :3000
     env_file:
       - ../database/.env
       - .env
