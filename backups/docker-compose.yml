@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  ofelia:
+    restart: always
+    container_name: ofelia
+    image: mcuadros/ofelia:39bca16 # https://hub.docker.com/layers/mcuadros/ofelia/39bca16/images/sha256-056bb78baccdd8d821aaf9cef59d7bb26038355751436a9e14a0af7af9370a6f
+    command: "daemon --config=/etc/ofelia/config.ini" # command is already prefixed with "ofelia"
+    env_file:
+      - ../database/.env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./ofelia.ini:/etc/ofelia/config.ini

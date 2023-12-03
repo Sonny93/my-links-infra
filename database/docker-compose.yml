@@ -18,6 +18,7 @@ services:
       - my_links_internal
     volumes:
       - db_vol:/var/lib/mysql
+      - ../backups/dumps:/dumps
 
   phpmyadmin:
     image: phpmyadmin:5
